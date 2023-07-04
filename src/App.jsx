@@ -1,19 +1,16 @@
 import React, { lazy} from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { Layout } from "./Layout";
+import { Layout } from "./components/Layout";
 import ToastConfig from "utils/ToastConfig";
-import PrivateRoute from "./PrivateRoute/PrivateRoute";
-import PublicRoute from './PublicRoute/PublicRoute';
-// import ContactForm from './Contactform/Contactform';
-// import Filter from './Filter/Filter';
-// import ContactList from './ContactList/ContsctList';
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import PublicRoute from './components/PublicRoute/PublicRoute';
+import { CONTACTS_ROUTE, LOGIN_ROUTE } from 'constans/routes';
 
-// import { H1, H2 } from './Hstyles';
 
-const HomePage = lazy(() => import('./Pages/Home'));
-const RegisterPage = lazy(() => import('./Pages/Register'));
-const LoginPage = lazy(() => import('./Pages/Login'));
-const Contacts = lazy(() => import('./Pages/Contacts'));
+const HomePage = lazy(() => import('./components/Pages/Home'));
+const RegisterPage = lazy(() => import('./components/Pages/Register'));
+const LoginPage = lazy(() => import('./components/Pages/Login'));
+const Contacts = lazy(() => import('./components/Pages/Contacts'));
 
 
 export default function App() {
@@ -28,12 +25,12 @@ export default function App() {
             <PublicRoute>
               <RegisterPage />
             </PublicRoute>} />
-        <Route path="/login"
+        <Route path={LOGIN_ROUTE}
           element={
             <PublicRoute>
               <LoginPage />
             </PublicRoute>} />
-      <Route path="/contacts"
+      <Route path={CONTACTS_ROUTE}
           element={
           <PrivateRoute>
             <Contacts />
