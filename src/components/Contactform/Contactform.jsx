@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { createContact } from 'redux/contacts/ContactThunks';
+import { useDispatch, useSelector } from 'react-redux';
+import { createContact, fetchContacts } from 'redux/contacts/ContactThunks';
 import { TextField, Button, Grid } from '@mui/material';
+import { toast } from 'react-toastify';
 
 export default function ContactForm() {
+  const contacts = useSelector((state)=> state.contacts.contacts)
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
@@ -18,15 +20,28 @@ export default function ContactForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+ const existingContactByName = contacts.find((contact) => contact.name === name);
+  const existingContactByNumber = contacts.find((contact) => contact.number === number);
 
-    const contact = {
-      name,
-      number,
-    };
+  if (existingContactByName) {
+    toast.warning('Contact with the same name already exists.');
+    return;
+  }
+
+  if (existingContactByNumber) {
+    toast.warning('Contact with the same number already exists.');
+    return;
+  }
+
+  const contact = {
+    name,
+    number,
+  };
 
     console.log(contact)
 
     dispatch(createContact(contact));
+    dispatch(fetchContacts())
 
     // Очищення полів після відправки форми
     setName('');
