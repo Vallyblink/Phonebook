@@ -3,6 +3,7 @@ import { loginProfileThunk, loginThunk, logoutThunk } from "./thunks";
 
 const initialState = {
     token: "",
+    isAuth: false,
     isLoading: false,
     error: "",
     profile: '',
@@ -11,6 +12,7 @@ const initialState = {
 const handleFulfilled = (state, { payload }) => {
     state.isLoading = false;
     state.token = payload.token;
+    state.isAuth = true;
 };
 
 const handleFulfilledProfile = (state, { payload }) => {
@@ -31,6 +33,7 @@ const handlePending = (state) => {
 const handleLogout = (state) => {
     state.token = "";
     state.profile = '';
+    state.isAuth = false;
 };
 
 const authSlice = createSlice({
@@ -43,7 +46,6 @@ const authSlice = createSlice({
             .addCase(logoutThunk.fulfilled, handleLogout)
             .addMatcher((action) => action.type.endsWith("/rejected"), handleReject)
             .addMatcher((action) => action.type.endsWith("/pending"), handlePending)
-             
     },
 });
 

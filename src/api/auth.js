@@ -8,7 +8,10 @@ const instanceContact = axios.create({
   baseURL: 'https://connections-api.herokuapp.com/contacts',
 });
 
-const setToken = (token) => {
+let authToken = ''; 
+
+export const setToken = (token) => {
+  authToken = token;
   instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   instanceContact.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 };
@@ -25,12 +28,13 @@ export const logIn = async (body) => {
 
 export const logOut = async (body) => {
   await instance.post('/logout', body);
+  authToken = ''; 
   delete instance.defaults.headers.common['Authorization'];
   delete instanceContact.defaults.headers.common['Authorization'];
 };
 
 export const getUserProfile = async () => {
-  const { data } = await instance.get('/current');
+  const { data } = await instance.get('/current', authToken);
   return data;
 };
 
@@ -40,7 +44,7 @@ export const getContact = async () => {
 };
 
 export const addContact = async (contactData) => {
-  const { data } = await instanceContact.post( contactData);
+  const { data } = await instanceContact.post(contactData);
   return data;
 };
 
@@ -48,4 +52,3 @@ export const deleteContact = async (contactId) => {
   await instanceContact.delete(`/${contactId}`);
   return contactId;
 };
-

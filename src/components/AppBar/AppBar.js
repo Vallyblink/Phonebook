@@ -4,12 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import { Phone } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginProfileThunk, logoutThunk } from 'redux/auth/thunks';
+import { setToken } from 'api/auth';
 
 
 
 
 const MyAppBar = () => {
-  const { token: isAuth, profile } = useSelector((state) => state.auth)
+  const { token, profile} = useSelector((state) => state.auth)
   const dispatch = useDispatch()
   console.log(profile)
    const navigate = useNavigate()
@@ -21,11 +22,12 @@ const MyAppBar = () => {
   }
   
   useEffect(() => {
-    if (isAuth && !profile) {
-      dispatch(loginProfileThunk())
+    if (token && profile === "") {
+      setToken(token)
+      dispatch(loginProfileThunk(token))
       
     }
-  }, [isAuth, dispatch, profile])
+  }, [token, dispatch, profile])
 
  
  
@@ -42,15 +44,15 @@ const MyAppBar = () => {
           onClick={() => navigate('/contacts')}>My Contacts
         </Button>
          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          {isAuth ? profile.name : 'Welcome' }
+          {token? profile.name : 'Welcome' }
         </Typography>
         <Button
           onClick={() => {
-            isAuth ? handleLogOut() : navigate('/login')  ;
+            token ? handleLogOut() : navigate('/login')  ;
           }}
           variant="outlined"
           color="inherit">
-          {!isAuth?'LogIn':'LogOut'  }
+          {token?'LogOut':'LogIn'  }
         </Button>
       </Toolbar>
     </AppBar>

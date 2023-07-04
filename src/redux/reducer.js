@@ -9,9 +9,9 @@ import { contactsReducer } from './contacts/ContactSlice';
 
 
 const persistConfig = {
-  key: 'token',
+  key: 'auth',
   storage,
-  whileList:['token']
+  whitelist:['token']
 }
 
 const persistedReducer = persistReducer(persistConfig, authReducer)
