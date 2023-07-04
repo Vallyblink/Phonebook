@@ -4,12 +4,12 @@ import { getContact, addContact, deleteContact } from "api/auth";
 
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchAll',
-  async () => {
+  async (_, {rejectWithValue}) => {
     try {
       const data = await getContact();
       return data;
-    } catch (error) {
-      throw new Error(error);
+    } catch (e) {
+      return rejectWithValue(e.message);
     }
   }
 );

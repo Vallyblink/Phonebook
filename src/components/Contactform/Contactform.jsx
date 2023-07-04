@@ -1,57 +1,63 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import FormFormik from './FormFormik';
-
-import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
 import { createContact } from 'redux/contacts/ContactThunks';
+import { TextField, Button, Grid } from '@mui/material';
 
 export default function ContactForm() {
-  const contacts = useSelector(state => state.contacts.contacts); // Оновлено
   const dispatch = useDispatch();
-
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  const handleFormSubmit = e => {
-    e.preventDefault();
-    const newContact = {
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
+
+  const handleNumberChange = (event) => {
+    setNumber(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const contact = {
       name,
       number,
     };
-    const normalizedContact = newContact.name.toLowerCase().trim();
-    const normalizedNumber = newContact.number.replaceAll(' ', '');
 
-    if (
-      contacts.some(el => el.name.toLowerCase().trim() === normalizedContact)
-    ) {
-      toast.warning(
-        `The contact name ${normalizedContact} already exists!`
-      );
-      return;
-    }
+    dispatch(createContact(contact));
 
-    if (
-      contacts.some(el => el.number.replaceAll(' ', '') === normalizedNumber)
-    ) {
-      toast.warning(
-        `The contact number ${normalizedNumber} already exists!`
-      );
-      return;
-    }
-
-    dispatch(createContact(newContact));
-
-    reset();
-  };
-
-  const reset = () => {
+    // Очищення полів після відправки форми
     setName('');
     setNumber('');
   };
 
   return (
-    <>
-      <FormFormik onSubmit={handleFormSubmit} />
-    </>
+    <form onSubmit={handleSubmit}>
+      <Grid container spacing={2} alignItems="center">
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            label="Name"
+            variant="outlined"
+            value={name}
+            onChange={handleNameChange}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            label="Phone Number"
+            variant="outlined"
+            value={number}
+            onChange={handleNumberChange}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Button type="submit" variant="contained" color="primary">
+            Add Contact
+          </Button>
+        </Grid>
+      </Grid>
+    </form>
   );
 }

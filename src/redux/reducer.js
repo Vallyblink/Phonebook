@@ -3,7 +3,8 @@ import { authReducer } from './auth/authSlice';
 import { filterReducer } from './filter/filterSlice';
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
-import ContactSlice from './contacts/ContactSlice';
+import { contactsReducer } from './contacts/ContactSlice';
+
 
 
 
@@ -16,7 +17,7 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, authReducer)
 
 const rootReducer = combineReducers({
-  contacts: ContactSlice,
+  contacts: contactsReducer,
   filter: filterReducer,
   auth: persistedReducer
 });
