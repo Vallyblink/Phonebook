@@ -1,27 +1,53 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setFilter } from "../../redux/filter/filterSlice";
-import { FilterContainer, FilterInput, Label } from "./styledFilter";
+import { filterContact } from "redux/filter/filterSlice";
+
+import { TextField, FormControl, InputAdornment } from "@mui/material";
+import { Search } from "@mui/icons-material";
+import { styled } from "@mui/system";
+import { setFilteredContacts } from "redux/contacts/ContactSlice";
+
+const FilterContainer = styled("div")`
+  margin-bottom: 20px;
+  margin-top: 20px;
+`;
 
 const Filter = () => {
   const dispatch = useDispatch();
-  const filter = useSelector((state) => state.filter); 
+  const filter = useSelector((state) => state.filter);
+  const contacts = useSelector((state) => state.contacts.contacts);
+
   const handleFilterChange = (event) => {
-    dispatch(setFilter(event.target.value));
+    const searchTerm = event.target.value;
+    dispatch(filterContact(searchTerm));
+
+    const filteredContacts = contacts.filter((contact) => {
+      const name = contact.name.toLowerCase();
+      return name.includes(searchTerm.toLowerCase());
+    });
+    dispatch(setFilteredContacts(filteredContacts));
   };
 
   console.log("Filter");
 
   return (
     <FilterContainer>
-      <Label>
-        Find contacts by name!
-        <FilterInput
+      <FormControl fullWidth>
+        <TextField
+          id="filter-input"
           type="text"
-          value={filter}
+          placeholder="Find contacts by name!"
+          value={filter.filter}
           onChange={handleFilterChange}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <Search />
+              </InputAdornment>
+            ),
+          }}
         />
-      </Label>
+      </FormControl>
     </FilterContainer>
   );
 };
