@@ -24,6 +24,8 @@ export default function ContactForm() {
       number,
     };
 
+    console.log(contact)
+
     dispatch(createContact(contact));
 
     // Очищення полів після відправки форми
@@ -33,7 +35,7 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Grid container spacing={2} alignItems="center">
+      <Grid container spacing={2} alignItems="center"  marginTop={3}>
         <Grid item xs={12}>
           <TextField
             fullWidth

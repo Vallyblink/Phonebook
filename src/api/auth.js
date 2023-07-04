@@ -34,7 +34,12 @@ export const logOut = async (body) => {
 };
 
 export const getUserProfile = async () => {
-  const { data } = await instance.get('/current', authToken);
+  const config = {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  };
+  const { data } = await instance.get('/current', config);
   return data;
 };
 
@@ -44,11 +49,21 @@ export const getContact = async () => {
 };
 
 export const addContact = async (contactData) => {
-  const { data } = await instanceContact.post(contactData);
+  const config = {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  };
+  const { data } = await instanceContact.post('', contactData, config);
   return data;
 };
 
 export const deleteContact = async (contactId) => {
-  await instanceContact.delete(`/${contactId}`);
+  const config = {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  };
+  await instanceContact.delete(`/${contactId}`, config);
   return contactId;
 };

@@ -18,8 +18,8 @@ export const createContact = createAsyncThunk(
   'contacts/create',
   async (contact, {rejectWithValue}) => {
     try {
-      const data = await addContact(contact);
-      return data;
+      await addContact(contact);
+      return contact;
     } catch (e) {
       return rejectWithValue(e.message);
     }

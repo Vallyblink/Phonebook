@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchContacts, removeContact } from '../../redux/contacts/ContactThunks';
+import { Box, Typography, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, CircularProgress } from '@mui/material';
+import { Delete as DeleteIcon } from '@mui/icons-material';
 
 const ContactList = () => {
   const dispatch = useDispatch();
@@ -17,29 +19,41 @@ const ContactList = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="200px">
+        <CircularProgress />
+      </Box>
+    );
   }
 
   if (error) {
-    return <div>Error: Something Gone Wrong</div>;
+    return (
+      <Typography variant="body1" color="error">
+        Error: Something went wrong.
+      </Typography>
+    );
   }
 
   return (
-    <div>
-      <h2>Contact List</h2>
+     <Box marginTop={3}>
+      <Typography variant="h4">Contact List</Typography>
       {contacts.length === 0 ? (
-        <p>No contacts found.</p>
+        <Typography variant="body1">No contacts found.</Typography>
       ) : (
-        <ul>
+        <List>
           {contacts.map((contact) => (
-            <li key={contact.id}>
-              {contact.name} ({contact.email})
-              <button onClick={() => handleDeleteContact(contact.id)}>Delete</button>
-            </li>
+            <ListItem key={contact.id}>
+              <ListItemText primary={contact.name} secondary={contact.number} />
+              <ListItemSecondaryAction>
+                <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteContact(contact.id)}>
+                  <DeleteIcon />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
           ))}
-        </ul>
+        </List>
       )}
-    </div>
+    </Box>
   );
 };
 

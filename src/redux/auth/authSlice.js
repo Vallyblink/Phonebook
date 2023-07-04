@@ -23,7 +23,6 @@ const handleFulfilledProfile = (state, { payload }) => {
 const handleReject = (state, { error, payload }) => {
     state.isLoading = false;
     state.error = payload ?? error.message;
-    console.log(state.error);
 };
 
 const handlePending = (state) => {
