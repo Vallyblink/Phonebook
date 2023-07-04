@@ -4,7 +4,7 @@ import { Layout } from "./components/Layout";
 import ToastConfig from "utils/ToastConfig";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import PublicRoute from './components/PublicRoute/PublicRoute';
-import { CONTACTS_ROUTE, LOGIN_ROUTE } from 'constans/routes';
+
 
 
 const HomePage = lazy(() => import('./components/Pages/Home'));
@@ -18,19 +18,19 @@ export default function App() {
   return (<>
     <ToastConfig/>
   <Routes>
-       <Route path="/" element={<Layout />}>
+       <Route element={<Layout />}>
       <Route index element={<HomePage/>} />
         <Route path="/singup"
           element={
             <PublicRoute>
               <RegisterPage />
             </PublicRoute>} />
-        <Route path={LOGIN_ROUTE}
+        <Route path="/login"
           element={
             <PublicRoute>
               <LoginPage />
             </PublicRoute>} />
-      <Route path={CONTACTS_ROUTE}
+      <Route path="/contacts"
           element={
           <PrivateRoute>
             <Contacts />
