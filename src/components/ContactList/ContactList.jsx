@@ -1,3 +1,4 @@
+// ContactList.jsx
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchContacts, removeContact } from '../../redux/contacts/ContactThunks';
@@ -6,7 +7,7 @@ import { Delete as DeleteIcon } from '@mui/icons-material';
 
 const ContactList = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector((state) => state.contacts.contacts);
+  const filteredContacts = useSelector((state) => state.contacts.filteredContacts);
   const isLoading = useSelector((state) => state.contacts.isLoading);
   const error = useSelector((state) => state.contacts.error);
 
@@ -35,13 +36,13 @@ const ContactList = () => {
   }
 
   return (
-     <Box marginTop={3}>
+    <Box marginTop={3}>
       <Typography variant="h4">Contact List</Typography>
-      {contacts.length === 0 ? (
+      {filteredContacts.length === 0 ? (
         <Typography variant="body1">No contacts found.</Typography>
       ) : (
         <List>
-          {contacts.map((contact) => (
+          {filteredContacts.map((contact) => (
             <ListItem key={contact.id}>
               <ListItemText primary={contact.name} secondary={contact.number} />
               <ListItemSecondaryAction>

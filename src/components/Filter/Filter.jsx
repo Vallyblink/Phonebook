@@ -1,11 +1,11 @@
+
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { filterContact } from "redux/filter/filterSlice";
+import { setFilteredContacts } from "redux/contacts/ContactSlice";
 
 import { TextField, FormControl, InputAdornment } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { styled } from "@mui/system";
-import { setFilteredContacts } from "redux/contacts/ContactSlice";
 
 const FilterContainer = styled("div")`
   margin-bottom: 20px;
@@ -14,17 +14,16 @@ const FilterContainer = styled("div")`
 
 const Filter = () => {
   const dispatch = useDispatch();
-  const filter = useSelector((state) => state.filter);
   const contacts = useSelector((state) => state.contacts.contacts);
 
   const handleFilterChange = (event) => {
     const searchTerm = event.target.value;
-    dispatch(filterContact(searchTerm));
 
     const filteredContacts = contacts.filter((contact) => {
       const name = contact.name.toLowerCase();
       return name.includes(searchTerm.toLowerCase());
     });
+
     dispatch(setFilteredContacts(filteredContacts));
   };
 
@@ -37,7 +36,6 @@ const Filter = () => {
           id="filter-input"
           type="text"
           placeholder="Find contacts by name!"
-          value={filter.filter}
           onChange={handleFilterChange}
           InputProps={{
             endAdornment: (
